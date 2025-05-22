@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://kit.fontawesome.com/97d1057dc0.js" crossorigin="anonymous"></script>
+  <title>Aarav Ahluwalia | Portfolio</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Reset & Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Theme variables */
+    :root {
+      --bg: #eef2f5;
+      --fg: #333;
+      --card-bg: #fff;
+      --header-bg: #008080;
+      --footer-bg: #008080;
+      --accent: #008080;
+      --button-bg: #008080;
+      --button-hover: #006666;
+    }
+    [data-theme="dark"] {
+      --bg: #121212;
+      --fg: #e0e0e0;
+      --card-bg: #1e1e1e;
+      --header-bg: #004f4f;
+      --footer-bg: #004f4f;
+      --accent: #4db6ac;
+      --button-bg: #4db6ac;
+      --button-hover: #359683;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: var(--header-bg);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar .brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+    }
+    .nav-links li {
+      margin-left: 20px;
+    }
+    .nav-links a {
+      color: #fff;
+      font-weight: 500;
+    }
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Responsive Navbar */
+    @media (max-width: 768px) {
+      .nav-links {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background: var(--header-bg);
+        width: 100%;
+        flex-direction: column;
+        display: none;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .nav-links li {
+        margin: 15px 0;
+        text-align: center;
+      }
+      .hamburger {
+        display: block;
+      }
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 0 20px;
+    }
+
+    section {
+      margin-bottom: 60px;
+    }
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title::after {
+      content: '';
+      display: block;
+      height: 4px;
+      width: 60px;
+      background: var(--accent);
+      margin-top: 6px;
+      border-radius: 2px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    /* About */
+    #about img {
+      float: right;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      margin: 0 0 20px 20px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    #about p { margin-bottom: 16px; }
+
+    /* Skills */
+    .skills ul {
+      display: flex;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+    .skills li {
+      background: var(--accent);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin: 6px;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    /* Projects Carousel */
+    .projects { position: relative; text-align: center; }
+    .project {
+      display: none;
+      min-height: 350px;
+    }
+    .project.active { display: block; }
+    .project h3 { margin-bottom: 12px; color: #005050; }
+    .carousel-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    .carousel-buttons button {
+      background: var(--button-bg);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background .3s;
+    }
+    .carousel-buttons button:hover { background: var(--button-hover); }
+
+    /* Resume */
+    .resume-section ul { list-style: none; margin-left: 0; }
+    .resume-section li {
+      margin-bottom: 12px;
+      position: relative;
+      padding-left: 20px;
+    }
+    .resume-section li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      top: 2px;
+      color: var(--accent);
+    }
+
+    /* Contact & Blog & Achievements & Hobbies */
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      background: var(--card-bg);
+      color: var(--fg);
+    }
+    .contact-form button {
+      background: var(--button-bg);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background .3s;
+    }
+    .contact-form button:hover { background: var(--button-hover); }
+
+    /* Footer */
+    footer {
+      background: var(--footer-bg);
+      color: #fff;
+      text-align: center;
+      padding: 30px 0;
+      margin-top: 40px;
+    }
+    footer a { color: #c0f0f0; }
+
+    /* Dark Mode Toggle Button */
+    .theme-toggle {
+      background: var(--button-bg);
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background .3s;
+    }
+    .theme-toggle:hover {
+      background: var(--button-hover);
+    }
+
+    /* Responsive About Image */
+    @media (max-width: 768px) {
+      #about img {
+        float: none;
+        display: block;
+        margin: 0 auto 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="hamburger" id="hamburger">&#9776;</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#resume">Resume</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#hobbies">Hobbies</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="brand">Aarav Ahluwalia</div>
+    <button class="theme-toggle" id="themeToggle"><i id="theme-icon"class="fa-solid fa-moon"></i></button>
+
+  </nav>
+
+  <div class="container">
+
+    <!-- About Me -->
+    <section id="about">
+      <h2 class="section-title">About Me</h2>
+      <img src="https://assets.onecompiler.app/43jfvyya8/43jfv5dfe/Screenshot_20250520-150128_Camera.jpg" alt="Aarav Ahluwalia">
+      <p>Hello! I’m Aarav Ahluwalia, a developer and designer dedicated to building elegant, responsive websites that solve real user problems. My journey began in middle school when I coded my first simple webpage—since then, I’ve cultivated expertise in HTML, CSS, and JavaScript, always striving to write clean, maintainable code.</p>
+      <p>Beyond the basics, I love diving into performance optimization, crafting intuitive UI patterns, and experimenting with subtle animations to delight users. Whether it’s a sleek business site or a dynamic web app, I approach every project with curiosity and rigor. In my free time, I explore new front-end frameworks, contribute to open-source, and read about UX best practices to ensure my work always stays fresh and user-centered.</p>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+      <h2 class="section-title">Skills</h2>
+      <ul class="skills">
+        <li>HTML5 & Semantic Markup</li>
+        <li>CSS3 (Flexbox, Grid, Animations)</li>
+        <li>JavaScript (ES6+, DOM)</li>
+        <li>React & Redux</li>
+        <li>Node.js & Express</li>
+        <li>MongoDB & SQL</li>
+        <li>Responsive & Mobile-First</li>
+        <li>Git & GitHub Workflows</li>
+        <li>UI/UX Design Principles</li>
+      </ul>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+      <h2 class="section-title">Projects</h2>
+      <div class="projects">
+        <div class="project active card">
+          <h3>1. Interactive Portfolio Website</h3>
+          <p>I designed and developed this very portfolio site using HTML, CSS, and vanilla JavaScript. It features a responsive layout, smooth scrolling, and an interactive project carousel. I focused on performance, achieving a Lighthouse score above 90 and ensuring accessibility with proper ARIA attributes.</p>
+          <p>Key highlights include a custom carousel component, mobile-first design, and optimized asset loading. The project taught me deeper DOM manipulation techniques and the importance of semantic HTML for SEO and screen readers.</p>
+          <p><a href="https://github.com/yourusername/portfolio" target="_blank">View on GitHub</a></p>
+        </div>
+        <div class="project card">
+          <h3>2. Real-Time Weather Dashboard</h3>
+          <p>Built with React, this app fetches live weather data from the OpenWeatherMap API. I implemented features like location search, unit toggles (°C/°F), and dynamic background changes based on weather conditions.</p>
+          <p>To enhance performance, I used React’s lazy loading for components and memoization for expensive computations. The UI was designed for clarity, with SVG icons and chart visualizations using Chart.js.</p>
+          <p><a href="https://github.com/yourusername/weather-app" target="_blank">View on GitHub</a></p>
+        </div>
+        <div class="project card">
+          <h3>3. Collaborative Task Manager</h3>
+          <p>This full-stack application allows multiple users to manage tasks in real time. Front-end is React with Context API; back-end is Node.js and Socket.IO for live updates.</p>
+          <p>Features include authentication, role-based permissions, and drag-and-drop task boards. I integrated MongoDB for data persistence and deployed the app on Heroku with CI/CD via GitHub Actions.</p>
+          <p><a href="https://github.com/yourusername/task-manager" target="_blank">View on GitHub</a></p>
+        </div>
+        <div class="project card">
+          <h3>4. E-Commerce Platform Prototype</h3>
+          <p>A prototype storefront built with Next.js and Stripe API integration. Users can browse products, add items to cart, and complete mock checkouts. I implemented server-side rendering for faster initial loads and SEO optimization.</p>
+          <p>The admin dashboard includes product management and order tracking. I also set up automated email notifications using Nodemailer.</p>
+          <p><a href="https://github.com/yourusername/e-commerce" target="_blank">View on GitHub</a></p>
+        </div>
+        <div class="project card">
+          <h3>5. Blogging Platform with Comments</h3>
+          <p>A MERN-stack application featuring user authentication, rich-text post editor, and threaded comments. I used Express.js for the API, MongoDB Atlas for the database, and deployed via Netlify and Heroku.</p>
+          <p>I prioritized security with JWT tokens, input sanitization, and rate limiting. The UI includes live markdown previews and image uploads to Cloudinary.</p>
+          <p><a href="https://github.com/yourusername/blog-platform" target="_blank">View on GitHub</a></p>
+        </div>
+      </div>
+      <div class="carousel-buttons">
+        <button id="prevBtn">&lt; Prev</button>
+        <button id="nextBtn">Next &gt;</button>
+      </div>
+    </section>
+
+    <!-- Resume -->
+    <section id="resume" class="resume-section">
+      <h2 class="section-title">Resume</h2>
+      <div class="card">
+        <h3>Professional Summary</h3>
+        <p>Versatile full-stack developer with 3+ years of experience designing, building, and maintaining web applications. Passionate about user experience, performance optimization, and clean code. Proven track record delivering projects on time and collaborating effectively with cross-functional teams.</p>
+
+        <h3>Experience</h3>
+        <ul>
+          <li><strong>Freelance Web Developer</strong> — Self-Employed (2021–Present)
+            <ul>
+              <li>Built 10+ responsive websites for local businesses, achieving a 95% client satisfaction rate.</li>
+              <li>Optimized page speed, reducing average load time by 40%.</li>
+            </ul>
+          </li>
+          <li><strong>Web Development Intern</strong> — XYZ Company (2020–2021)
+            <ul>
+              <li>Assisted in migrating legacy codebase to React.js, improving maintainability.</li>
+              <li>Implemented unit and integration tests, raising test coverage from 30% to 75%.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Education</h3>
+        <ul>
+          <li>B.Sc. in Computer Science — University of XYZ, 2020 (GPA: 3.8/4.0)</li>
+        </ul>
+
+        <h3>Certifications & Courses</h3>
+        <ul>
+          <li>Certified JavaScript Developer — ABC Institute, 2022</li>
+          <li>React & Redux Masterclass — Udemy, 2021</li>
+        </ul>
+
+        <p><a href="resume.pdf" download>Download full resume (PDF)</a></p>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+      <h2 class="section-title">Testimonials</h2>
+      <div class="card">
+        <p>"Aarav’s expertise in front-end development is exceptional. He transformed our outdated site into a modern, responsive platform that has boosted our traffic by 50%. His attention to detail and proactive communication made the project seamless."<br>
+        <strong>– Sarah Lee, Marketing Director at Acme Corp.</strong></p>
+      </div>
+      <div class="card">
+        <p>"Working with Aarav was a delight. He not only delivered high-quality code on time but also provided insightful UX suggestions that improved user engagement significantly. I highly recommend him for any web project."<br>
+        <strong>– David Kumar, CTO of StartupXYZ</strong></p>
+      </div>
+    </section>
+
+    <!-- Blog -->
+    <section id="blog">
+      <h2 class="section-title">Blog</h2>
+      <div class="card">
+        <h3>The Basics of Responsive Web Design</h3>
+        <p>In this post, I cover the core principles of responsive design—fluid grids, flexible images, and media queries—and demonstrate how to build layouts that adapt seamlessly across devices.</p>
+      </div>
+      <div class="card">
+        <h3>Why JavaScript is Crucial for Modern Web Development</h3>
+        <p>This article explores how JavaScript powers interactivity, data fetching, and client-side rendering, and why every front-end developer should master ES6+ features and modern frameworks.</p>
+      </div>
+    </section>
+
+    <!-- Achievements -->
+    <section id="achievements">
+      <h2 class="section-title">Achievements</h2>
+      <div class="card">
+        <ul>
+          <li>Winner of the XYZ Web Design Competition (2023)</li>
+          <li>Completed the Full Stack Web Development Course on Coursera (2022)</li>
+          <li>Published articles on CSS-Tricks and Smashing Magazine</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Hobbies -->
+    <section id="hobbies">
+      <h2 class="section-title">Hobbies</h2>
+      <div class="card">
+        <ul>
+          <li>Exploring new technologies and tools</li>
+          <li>Playing video games</li>
+          <li>Reading about design trends</li>
+          <li>Traveling and exploring new places</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h2 class="section-title">Contact</h2>
+      <div class="card contact-form">
+        <form action="#" method="POST">
+          <input type="text" name="name" placeholder="Your Name" required>
+          <input type="email" name="email" placeholder="Your Email" required>
+          <textarea name="message" placeholder="Your Message" rows="6" required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Aarav Ahluwalia. All rights reserved.</p>
+      <p>
+        <a href="mailto:aarav@example.com">Email Me</a> |
+        <a href="https://www.linkedin.com/in/yourprofile" target="_blank">LinkedIn</a> |
+        <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    window.onload = function() {
+      // Navbar toggle
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.getElementById('navLinks');
+      hamburger.onclick = () => navLinks.classList.toggle('active');
+
+      // Carousel
+      const projects = document.querySelectorAll('.project');
+      const prevBtn  = document.getElementById('prevBtn');
+      const nextBtn  = document.getElementById('nextBtn');
+      let idx = 0;
+      function showProject(i) {
+        projects.forEach((p, j) => p.classList.toggle('active', j === i));
+      }
+      showProject(idx);
+      prevBtn.onclick = () => {
+        idx = (idx - 1 + projects.length) % projects.length;
+        showProject(idx);
+      };
+      nextBtn.onclick = () => {
+        idx = (idx + 1) % projects.length;
+        showProject(idx);
+      };
+
+      // Dark mode toggle
+      const toggle = document.getElementById('themeToggle');
+      toggle.onclick = () => {
+        const html = document.documentElement;
+        const theme_icon = document.getElementById('theme-icon')
+        if (html.getAttribute('data-theme') === 'light') {
+          html.setAttribute('data-theme', 'dark');
+          theme_icon.setAttribute('class', 'fa-solid fa-sun')
+        } else {
+          html.setAttribute('data-theme', 'light');
+          theme_icon.setAttribute('class', 'fa-solid fa-moon')
+        }
+      };
+    };
+  </script>
+</body>
+</html>
